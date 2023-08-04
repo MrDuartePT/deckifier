@@ -20,8 +20,8 @@ This adds almost all of the required SteamOS dependencies, as well as FPS limiti
 
 <hr>
 
-# IMPORTANT
-This only works for ArchLinux running Cinnamon DE and LightDM as display manager. The files named as ```jupiter-biosupdate``` and ```steamos-update``` are just dummy files for Gamescope Session to work. I'm working on an automated installation script but just wanted to share this as soon as i got it working.
+# IMPORTANT (WORK IN POGRESS)
+This only works for ArchLinux running Hyprland and Greetd as display manager. The files named as ```jupiter-biosupdate``` and ```steamos-update``` are just dummy files for Gamescope Session to work. I'm working on an automated installation script but just wanted to share this as soon as i got it working.
 
 <hr>
 
