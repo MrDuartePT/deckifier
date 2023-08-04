@@ -6,7 +6,7 @@
 <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/MrDuartePT/deckifier-hyprland">
 <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/MrDuartePT/deckifier-hyprland">
 <img alt="Bitbucket open issues" src="https://img.shields.io/bitbucket/issues/MrDuartePT/deckifier-hyprland">
-<img alt="GitHub commit activity (branch)" src="https://img.shields.io/github/commit-activity/y/MrDuartePT/deckifier-hyprland/">
+<img alt="GitHub commit activity (branch)" src="https://img.shields.io/github/commit-activity/y/MrDuartePT/deckifier-hyprland">
 
 <hr>
 
