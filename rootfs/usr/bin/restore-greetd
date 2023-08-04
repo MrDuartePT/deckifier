@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -ex
+
+subcommand="$1";
+
+if [[ $subcommand == steamos ]]; then
+    cp /etc/greetd/config-desktop-mode.toml /etc/greetd/config.toml
+elif [[ $subcommand == desktop ]]; then
+    cp /etc/greetd/config-login.toml /etc/greetd/config.toml
+fi
