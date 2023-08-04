@@ -28,6 +28,12 @@ This only works for ArchLinux running Hyprland and Greetd as display manager. Th
 # Pre-requisites
 Before installing, make sure the `multilib` repository is enabled in /etc/pacman.conf and `nano`, `mangohud`, `lib32-mangohud` and `mangoapp` installed.
 
+# Gentoo Ebuild
+
+The Gentoo Ebuild link is hosted [here](https://github.com/MrDuartePT/mrduarte-ebuilds)
+
+[Ebuild file](https://github.com/MrDuartePT/mrduarte-ebuilds/blob/f5785e150017b9c7bcb734b8a55cfa0ce083215b/games-util/gamescope-session-hyprland/gamescope-session-hyprland-9999.ebuild)
+
 # Steps:
 
 ## 1. Cloning this repo and copy files with proper permissions
