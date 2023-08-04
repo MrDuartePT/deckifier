@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#All env parameters are on my Hyprland config
+
+set -e
+
+dbus-run-session -- /usr/bin/Hyprland

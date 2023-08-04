@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Hyprland (single time session)
+Comment=This Session log on Hyprland on time
+Exec=/usr/bin/hyprland-session-oneshot
+TryExec=/usr/bin/hyprland-session-oneshot
+Type=Application
+DesktopNames=Cinnamon
+X-GDM-SessionRegisters=true

@@ -11,6 +11,6 @@
     </defaults>
     <annotate key="org.freedesktop.policykit.exec.path">/usr/bin/setcap</annotate>
     <annotate key="org.freedesktop.policykit.exec.argv1">CAP_SYS_NICE=eip</annotate>
-    <annotate key="org.freedesktop.policykit.exec.argv2">/home/alejandro/.local/share/Steam/steamapps/common/SteamVR/bin/linux64/vrcompositor-launcher</annotate>
+    <annotate key="org.freedesktop.policykit.exec.argv2">/home/mrduarte/.local/share/Steam/steamapps/common/SteamVR/bin/linux64/vrcompositor-launcher</annotate>
   </action>
 </policyconfig>
