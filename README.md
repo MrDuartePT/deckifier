@@ -76,6 +76,13 @@ reboot
 ## NOTE:
 Not using Hyprland: just run ```rm -rf /etc/greetd``` and by defaut 'Switch to Desktop Mode' will restart your display manager
 
+Using Nvidia Laptop
+After adding DRI_PRIME=1 %command% to launch option games launch fine
+1st Note: Dont do nested gamescipe on SteamOS session the game will crash on lauch, but you can use mangohud or other option
+2st Note: If you laptop have the hdmi conneted to the dGPU you looose that output
+
+Using Laptop in dGPU Mode[MUX] or Nvidia GPU on desktop (Need testers):
+[I will alsume the result will be the same on Desktop PC but I only have a laptop to test]
 
 # Credits:
 
