@@ -2,19 +2,26 @@
 
 set -ex
 
-DESKTOP_ENVIROMENT="/usr/bin/hyprland-session"
-CHECK_GREETD=$(ls /etc/greetd/config-login.toml)
-
-#Write this enviroment at boot to run Diplay manager
-
-if [ $CHECK_GREETD ]; then
-  /usr/bin/restore-greetd steamos
-  systemctl reset-failed display-manager.service
-  systemctl restart display-manager.service
-  echo "Restarted ReGreet"
-  sleep 2
-  /usr/bin/restore-greetd desktop
-else
-  systemctl reset-failed display-manager.service
-  systemctl restart display-manager.service
-fi
+case "$1" in
+  login)
+    cp /etc/greetd/config-login.toml /etc/greetd/config.toml || true
+    systemctl reset-failed display-manager.service
+    systemctl restart display-manager.service
+  ;;
+  desktop)
+    cp /etc/greetd/config-desktop.toml /etc/greetd/config.toml || true
+    systemctl reset-failed display-manager.service
+    systemctl restart display-manager.service
+  ;;
+  gamescope)
+    cp /etc/greetd/config-deck.toml /etc/greetd/config.toml || true
+    systemctl reset-failed display-manager.service
+    systemctl restart display-manager.service
+  ;;
+  *) #Revert Steam UI to desktop mode
+    cp /etc/greetd/config-desktop.toml /etc/greetd/config.toml || true
+    systemctl reset-failed display-manager.service
+    systemctl restart display-manager.service
+    cp /etc/greetd/config-login.toml /etc/greetd/config.toml
+  ;;  
+esac
