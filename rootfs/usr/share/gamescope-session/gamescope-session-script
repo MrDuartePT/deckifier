@@ -94,6 +94,12 @@ export STEAM_MANGOAPP_HORIZONTAL_SUPPORTED=1
 # Scaling support
 export STEAM_GAMESCOPE_FANCY_SCALING_SUPPORT=1
 
+# Fix gamescope for multi gpu system
+# Force wlroots/gamescope to run on the frist gpu (in multi gpu system most likely is the igpu)
+# This fix gamescope not open when on hybrid with NVIDIA enable
+# Pls use DRI_PRIME=1 in games to use the dgpu
+export WLR_DRM_DEVICES=/dev/dri/card0
+
 # Set input method modules for Qt/GTK that will show the Steam keyboard
 export QT_IM_MODULE=steam
 export GTK_IM_MODULE=Steam
