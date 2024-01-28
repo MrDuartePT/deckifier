@@ -1,6 +1,0 @@
-[terminal]
-vt=1
-
-[default_session]
-command = "env XKB_DEFAULT_LAYOUT=pt WLR_NO_HARDWARE_CURSORS=1 cage -s -- regreet --config /home/mrduarte/.config/regreet.toml"
-user = "mrduarte"

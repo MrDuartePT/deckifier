@@ -63,12 +63,23 @@ ctrl+O and Enter to Save
 ctrl+X to exit
 ```
 
-## 3. Hyprland and greetd user
+## 3. Go to /usr/lib/os-session-select and replace with your username 
+```
+nano /usr/lib/os-session-select
+```
+```
+At line 92 replace mrduarte with your username
+ctrl+O and Enter to Save
+ctrl+X to exit
+```
+
+
+## 4. Hyprland and greetd user
 
 Not forget to edit the user in /etc/greetd/config-desktop-mode.toml 
 If you use sway or other DE with greetd you can edit the DE of choice in there and copy your current /etc/greetd/config.toml to /etc/greetd/config-desktop-mode.toml
 
-## 4. Reboot and enjoy SteamOS!
+## 5. Reboot and enjoy SteamOS!
 ```
 reboot
 ```
@@ -83,6 +94,8 @@ After adding DRI_PRIME=1 %command% to launch option games launch fine
 
 Using Laptop in dGPU Mode[MUX] or Nvidia GPU on desktop (Need testers):
 [I will alsume the result will be the same on Desktop PC but I only have a laptop to test]
+
+You my need to edit things in (/usr/lib/os-session-select)[https://github.com/MrDuartePT/deckifier-hyprland/blob/main/rootfs/usr/lib/os-session-select]
 
 # Credits:
 

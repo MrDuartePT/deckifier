@@ -1,27 +1,99 @@
-#!/bin/bash
+#! /usr/bin/bash
 
-set -ex
+set -e
 
-case "$1" in
-  login)
-    cp /etc/greetd/config-login.toml /etc/greetd/config.toml || true
-    systemctl reset-failed display-manager.service
-    systemctl restart display-manager.service
+die() { echo >&2 "!! $*"; exit 1; }
+
+CONF_FILE="/etc/greetd/config.toml"
+SENTINEL_FILE="steamos-session-select"
+
+# For sanity this shipped file must be present, to ensure we're still on a normal-looking Chimeraos setup.
+# The file was change to greetd config file
+CHECK_FILE="/etc/greetd/config.toml"
+
+session="${1:-gamescope}"
+session_type="wayland"
+
+session_launcher="gamescope-session"
+create_sentinel=""
+
+if [[ "$2" == "--sentinel-created" ]]; then
+  SENTINEL_CREATED=1
+  session_type="wayland"
+fi
+
+# Update config sentinel
+if [[ -z $SENTINEL_CREATED ]]; then
+  [[ $EUID == 0 ]] && die "Running $0 as root is not allowed"
+
+  [[ -n ${HOME+x} ]] || die "No \$HOME variable"
+  config_dir="${XDG_CONF_DIR:-"$HOME/.config"}"
+  session_type=$(
+    cd "$HOME"
+    mkdir -p "$config_dir"
+    cd "$config_dir"
+    if [[ -f "steamos-session-type" ]]; then
+      cp steamos-session-type "$SENTINEL_FILE"
+    else
+      echo "wayland" > "$SENTINEL_FILE"
+    fi
+    cat "$SENTINEL_FILE"
+  )
+
+  # clear steam game desktop shortcut clutter
+  DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+  grep --files-with-matches "Exec=steam steam://rungameid/" ${DATA_HOME}/applications/* | tr '\n' '\0' | xargs -0 -I {} rm {} || true
+
+  # If we were executed as a session user and then re-execute as root below, we don't want to set root's sentinel too
+  export SENTINEL_CREATED=1
+fi
+
+# We use "plasma" as "desktop" to hook up to SteamOS's scripts
+# Change the session_launcher for your command you use on greetd
+case "$session" in
+  plasma-wayland-persistent)
+    session_launcher="Hyprland"
   ;;
-  desktop)
-    cp /etc/greetd/config-desktop.toml /etc/greetd/config.toml || true
-    systemctl reset-failed display-manager.service
-    systemctl restart display-manager.service
+  plasma-x11-persistent)
+    session_launcher="Hyprland"
+  ;;
+  desktop|plasma)
+    session_launcher="Hyprland"
+    create_sentinel=1
   ;;
   gamescope)
-    cp /etc/greetd/config-deck.toml /etc/greetd/config.toml || true
-    systemctl reset-failed display-manager.service
-    systemctl restart display-manager.service
+    session_launcher="gamescope-session"
+    create_sentinel=1
   ;;
-  *) #Revert Steam UI to desktop mode
-    cp /etc/greetd/config-desktop.toml /etc/greetd/config.toml || true
-    systemctl reset-failed display-manager.service
-    systemctl restart display-manager.service
-    cp /etc/greetd/config-login.toml /etc/greetd/config.toml
-  ;;  
+  login) #my login config pls change
+    session_launcher='"env XKB_DEFAULT_LAYOUT=pt WLR_NO_HARDWARE_CURSORS=1 cage -s -- regreet --config /home/mrduarte/.config/regreet.toml"'
+  ;;
+  *)
+    echo >&2 "!! Unrecognized session '$session'"
+    exit 1
+  ;;
 esac
+
+echo "Updated user selected session to $session"
+
+# Become root
+if [[ $EUID != 0 ]]; then
+  exec pkexec "$(realpath $0)" "$session" --sentinel-created
+  exit 1
+fi
+
+# Update this to greetd format (pls edit for your user)
+{
+  echo "[terminal]"
+  echo "vt=1"
+  echo ""
+  echo "[default_session]"
+  echo "command = $session_launcher"
+  echo 'user = "mrduarte"'
+} > "$CONF_FILE"
+
+echo "Updated system autologin session to $session"
+systemctl reset-failed display-manager
+systemctl restart display-manager
+echo "Restarted Display Manager"
+
