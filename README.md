@@ -21,7 +21,7 @@ This adds almost all of the required SteamOS dependencies, as well as FPS limiti
 <hr>
 
 # IMPORTANT
-This only works on distros running Hyprland and Greetd as display manager. The files named as ```jupiter-biosupdate``` and ```steamos-update``` are just dummy files for Gamescope Session to work. I'm working on an automated installation script but just wanted to share this as soon as i got it working.
+This only works on distros running Hyprland and SDDM as display manager. The files named as ```jupiter-biosupdate``` and ```steamos-update``` are just dummy files for Gamescope Session to work. I'm working on an automated installation script but just wanted to share this as soon as i got it working.
 
 <hr>
 
@@ -68,25 +68,17 @@ ctrl+X to exit
 nano /usr/lib/os-session-select
 ```
 ```
-At line 92 replace mrduarte with your username
+At line 90 replace mrduarte with your username
 ctrl+O and Enter to Save
 ctrl+X to exit
 ```
 
-
-## 4. Hyprland and greetd user
-
-Not forget to edit the user in /etc/greetd/config-desktop-mode.toml 
-If you use sway or other DE with greetd you can edit the DE of choice in there and copy your current /etc/greetd/config.toml to /etc/greetd/config-desktop-mode.toml
-
-## 5. Reboot and enjoy SteamOS!
+## 4. Reboot and enjoy SteamOS!
 ```
 reboot
 ```
 
 ## NOTE:
-Not using Hyprland: just run ```rm -rf /etc/greetd``` and by defaut 'Switch to Desktop Mode' will restart your display manager
-
 Using Nvidia Laptop
 After adding DRI_PRIME=1 %command% to launch option games launch fine
 1st Note: Dont do nested gamescipe on SteamOS session the game will crash on lauch, but you can use mangohud or other option
