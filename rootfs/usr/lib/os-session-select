@@ -65,10 +65,9 @@ case "$session" in
     session_launcher="gamescope-session.desktop"
     create_sentinel=1
   ;;
-  login) #my login config pls change
-    exec pkexec "$(realpath $0)" "$session" --sentinel-created
-    rm $CONF_FILE
-    exit
+  login)     
+    create_sentinel=1
+    #will delete the autologin file bellow
   ;;
   *)
     echo >&2 "!! Unrecognized session '$session'"
@@ -92,11 +91,7 @@ else
 	# Update this to greetd format (pls edit for your user)
 	{
   	echo "[Autologin]"
-  	echo "User=mrduarte"
-  	echo ""
   	echo "Session=$session_launcher"
-  	echo ""
-  	echo "Relogin=false"
 	} > "$CONF_FILE"
 fi
 
