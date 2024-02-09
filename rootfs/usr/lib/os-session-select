@@ -4,7 +4,7 @@ set -e
 
 die() { echo >&2 "!! $*"; exit 1; }
 
-CONF_FILE="/etc/sddm.conf.d/03-gamescope-session.conf"
+CONF_FILE="/etc/greetd/config.toml"
 SENTINEL_FILE="steamos-session-select"
 
 # For sanity this shipped file must be present, to ensure we're still on a normal-looking Chimeraos setup.
@@ -52,22 +52,21 @@ fi
 # Change the session_launcher for your command you use on greetd
 case "$session" in
   plasma-wayland-persistent)
-    session_launcher="hyprland.desktop"
+    session_launcher="Hyprland"
   ;;
   plasma-x11-persistent)
-    session_launcher="hyprland.desktop"
+    session_launcher="Hyprland"
   ;;
   desktop|plasma)
-    session_launcher="hyprland.desktop"
+    session_launcher="Hyprland"
     create_sentinel=1
   ;;
   gamescope)
-    session_launcher="gamescope-session.desktop"
+    session_launcher="gamescope-session"
     create_sentinel=1
   ;;
-  login)     
-    create_sentinel=1
-    #will delete the autologin file bellow
+  login)
+    session_launcher='"env XKB_DEFAULT_LAYOUT=pt WLR_NO_HARDWARE_CURSORS=1 cage -s -- regreet --config /home/mrduarte/.config/regreet.toml"'
   ;;
   *)
     echo >&2 "!! Unrecognized session '$session'"
@@ -83,17 +82,15 @@ if [[ $EUID != 0 ]]; then
   exit 1
 fi
 
-if [[ "$session" = login ]]; then
-	rm $CONF_FILE || die
-	sleep 1
-	exit 1
-else
 	# Update this to greetd format (pls edit for your user)
 	{
-  	echo "[Autologin]"
-  	echo "Session=$session_launcher"
-	} > "$CONF_FILE"
-fi
+  echo "[terminal]"
+  echo "vt=1"
+  echo ""
+  echo "[default_session]"
+  echo "command = $session_launcher"
+  echo 'user = "mrduarte"'	
+  } > "$CONF_FILE"
 
 echo "Updated system autologin session to $session"
 systemctl reset-failed sddm

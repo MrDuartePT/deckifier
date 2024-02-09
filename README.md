@@ -25,9 +25,9 @@ This works on distros running Hyprland and SDDM as display manager. But can be e
 
 It also available a [kde](https://github.com/MrDuartePT/deckifier/tree/kde) branch that use the plasma desktop
 
-For lightdm user use the [lightdm](https://github.com/MrDuartePT/deckifier/tree/kde) branch (not forget to change the DE/WM if needed)
+For lightdm user use the [lightdm](https://github.com/MrDuartePT/deckifier/tree/lightdm) branch (not forget to change the DE/WM if needed)
 
-For greetd user use the [Hyprland-greetd](https://github.com/MrDuartePT/deckifier/tree/kde) branch (not forget to change the DE/WM if needed)
+For greetd user use the [hyprland-greetd](https://github.com/MrDuartePT/deckifier/tree/hyprland-greetd) branch (not forget to change the DE/WM if needed)
 
 TODO: An [gbm](https://github.com/MrDuartePT/deckifier/tree/gbm)  branch (If someone what to do a PR also welcome)
 
@@ -59,12 +59,13 @@ chmod a+x /usr/share/applications/org.valve.gamescope.desktop
 
 ```
 
-## 2. Go to /usr/lib/os-session-select and replace session_launcher if needed 
+## 2. Go to /usr/lib/os-session-select and replace session_launcher if needed and also edit the username 
 ```
 nano /usr/lib/os-session-select
 ```
 ```
-At line 50-66 replace mrduarte what is needed
+At line 50-66 replace session_launcher what is needed
+At line 92 replace mrduate with your username
 ctrl+O and Enter to Save
 ctrl+X to exit
 ```
