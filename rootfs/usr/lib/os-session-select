@@ -52,13 +52,13 @@ fi
 # Change the session_launcher for your command you use on greetd
 case "$session" in
   plasma-wayland-persistent)
-    session_launcher="hyprland.desktop"
+    session_launcher="plasmawayland.desktop"
   ;;
   plasma-x11-persistent)
-    session_launcher="hyprland.desktop"
+    session_launcher="plasmax11.desktop"
   ;;
   desktop|plasma)
-    session_launcher="hyprland.desktop"
+    session_launcher="plasmawayland.desktop"
     create_sentinel=1
   ;;
   gamescope)
