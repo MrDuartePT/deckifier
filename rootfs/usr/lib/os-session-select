@@ -4,7 +4,7 @@ set -e
 
 die() { echo >&2 "!! $*"; exit 1; }
 
-CONF_FILE="/etc/sddm.conf.d/03-gamescope-session.conf"
+CONF_FILE="/etc/lightdm/lightdm.conf.d/03-gamescope-session.conf"
 SENTINEL_FILE="steamos-session-select"
 
 # For sanity this shipped file must be present, to ensure we're still on a normal-looking Chimeraos setup.
@@ -49,20 +49,20 @@ if [[ -z $SENTINEL_CREATED ]]; then
 fi
 
 # We use "plasma" as "desktop" to hook up to SteamOS's scripts
-# Change the session_launcher for your command you use on greetd
+# Change the session_launcher desktop file you use on lightdm
 case "$session" in
   plasma-wayland-persistent)
-    session_launcher="hyprland.desktop"
+    session_launcher="cinnamon-session"
   ;;
   plasma-x11-persistent)
-    session_launcher="hyprland.desktop"
+    session_launcher="cinnamon-session"
   ;;
   desktop|plasma)
-    session_launcher="hyprland.desktop"
+    session_launcher="cinnamon-session"
     create_sentinel=1
   ;;
   gamescope)
-    session_launcher="gamescope-session.desktop"
+    session_launcher="gamescope-session"
     create_sentinel=1
   ;;
   login)     
@@ -90,13 +90,13 @@ if [[ "$session" = login ]]; then
 else
 	# Update this to greetd format (pls edit for your user)
 	{
-  	echo "[Autologin]"
-  	echo "Session=$session_launcher"
+    echo "[Seat:*]"
+    echo "autologin-session=$session_launcher"
 	} > "$CONF_FILE"
 fi
 
 echo "Updated system autologin session to $session"
 systemctl reset-failed sddm
 systemctl restart sddm
-echo "Restarted SDDM Display Manager"
+echo "Restarted LightDM"
 

@@ -25,9 +25,9 @@ This works on distros running Hyprland and SDDM as display manager. But can be e
 
 It also available a [kde](https://github.com/MrDuartePT/deckifier/tree/kde) branch that use the plasma desktop
 
-For lightdm user use the [lightdm](https://github.com/MrDuartePT/deckifier/tree/kde) branch (not forget to change the DE/WM if needed)
+For lightdm user use the [lightdm](https://github.com/MrDuartePT/deckifier/tree/lightdm) branch (not forget to change the DE/WM if needed)
 
-For greetd user use the [Hyprland-greetd](https://github.com/MrDuartePT/deckifier/tree/kde) branch (not forget to change the DE/WM if needed)
+For greetd user use the [hyprland-greetd](https://github.com/MrDuartePT/deckifier/tree/hyprland-greetd) branch (not forget to change the DE/WM if needed)
 
 TODO: An [gbm](https://github.com/MrDuartePT/deckifier/tree/gbm)  branch (If someone what to do a PR also welcome)
 
