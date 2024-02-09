@@ -56,7 +56,7 @@ cp -rf rootfs/etc/* /etc
 chmod 777 /usr/bin/steamos-session-select
 gio set /usr/share/applications/org.valve.gamescope.desktop metadata::trusted true
 chmod a+x /usr/share/applications/org.valve.gamescope.desktop
-
+systemctl --user enable steam-powerbutton.service
 ```
 
 ## 2. Go to /usr/lib/os-session-select and replace session_launcher if needed 

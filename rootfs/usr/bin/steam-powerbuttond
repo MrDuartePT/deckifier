@@ -1,0 +1,107 @@
+#!/usr/bin/env python
+
+# created based on implementation from HandyGCCS https://github.com/ShadowBlip/HandyGCCS/blob/10bf0da2bbe06b4e6c608e157f26628b6d848042/src/handycon/utilities.py#L351
+
+import logging
+import evdev
+import threading
+import os
+import subprocess
+import time
+import select
+
+logger = logging.getLogger(__name__)
+
+POWER_BUTTON_PRIMARY = "LNXPWRBN/button/input0"
+POWER_BUTTON_SECONDARY = "PNP0C0C/button/input0"
+STEAM_PID = os.path.expanduser("~/.steam/steam.pid")
+STEAM_EXE = os.path.expanduser("~/.steam/root/ubuntu12_32/steam")
+
+powerbuttondevice = None
+powerbuttondevice2 = None
+longpresstimer = None
+error_logged_game_mode = False
+error_logged = False
+
+def steam_game_mode():
+    pid = None
+    try:
+        with open(STEAM_PID) as f:
+            pid = f.read().strip()
+
+        steam_cmd_path = f"/proc/{pid}/cmdline"
+        if not os.path.exists(steam_cmd_path):
+            return False
+
+        # Use this and line to determine if Steam is running in DeckUI mode.
+        with open(steam_cmd_path, "rb") as f:
+            steam_cmd = f.read()
+        is_deck_ui = b"-gamepadui" in steam_cmd
+        if not is_deck_ui:
+            return False  
+    except Exception:
+        return False
+    return True
+
+def run_steam_command(command):
+    try:
+        result = subprocess.run([STEAM_EXE, f"-ifrunning {command}" ])
+        return result.returncode == 0
+    except Exception as e:
+        logger.error(f'steam-powerbuttond: failed to run steam command: {e}')
+        return False
+
+def longpress():
+    global longpresstimer
+    longpresstimer = None
+    run_steam_command("steam://longpowerpress")
+
+while True:
+    #Check steam is running
+    if not steam_game_mode():
+        time.sleep(2)
+        if not error_logged_game_mode :
+            logger.error('steam-powerbuttond: Steam not running in Big Picture mode, waiting...')
+            error_logged_game_mode = True
+            error_logged = False
+        continue
+    
+    if not error_logged:
+        logger.info('steam-powerbuttond: Steam running, grabing power button')
+        error_logged_game_mode = False
+        error_logged = True
+
+    devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
+    for device in devices:
+        if device.name == 'Power Button' and device.phys == POWER_BUTTON_PRIMARY:
+            powerbuttondevice = device
+            powerbuttondevice.grab()
+            logger.info ( "steam-powerbuttond: power button 1 found!" )
+        elif device.name == 'Power Button' and device.phys == POWER_BUTTON_SECONDARY:
+            powerbuttondevice2 = device
+            powerbuttondevice2.grab()
+            logger.info ( "steam-powerbuttond: power button 2 found!" )        
+        else:
+            device.close()
+
+    if powerbuttondevice != None or powerbuttondevice2 != None:
+        power_button = powerbuttondevice or powerbuttondevice2
+        try:
+            timeout, _, _ = select.select([power_button], [], [], 5.0)
+            if power_button in timeout:
+                for event in power_button.read_loop():
+                    if event.type == evdev.ecodes.EV_KEY and event.code == 116:  # KEY_POWER
+                        if event.value == 1:
+                            longpresstimer = threading.Timer(1.0, longpress)
+                            longpresstimer.start()
+                        elif event.value == 0:
+                            if longpresstimer is not None:
+                                run_steam_command("steam://shortpowerpress")
+                            longpresstimer.cancel()
+                            longpresstimer = None
+        except:
+            pass    
+    if powerbuttondevice:
+        powerbuttondevice.close()
+    if powerbuttondevice2:
+        powerbuttondevice2.close()

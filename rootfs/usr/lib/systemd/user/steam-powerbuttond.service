@@ -1,0 +1,9 @@
+[Unit]
+Description=Steam Power Button Service
+
+[Service]
+ExecStart=/usr/bin/steam-powerbuttond
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
