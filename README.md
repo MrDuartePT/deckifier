@@ -21,12 +21,20 @@ This adds almost all of the required SteamOS dependencies, as well as FPS limiti
 <hr>
 
 # IMPORTANT
-This only works on distros running Hyprland and SDDM as display manager. The files named as ```jupiter-biosupdate``` and ```steamos-update``` are just dummy files for Gamescope Session to work. I'm working on an automated installation script but just wanted to share this as soon as i got it working.
+This works on distros running Hyprland and SDDM as display manager. But can be edit to work with other DE/WM (explain bellow)
+
+It also available a [kde](https://github.com/MrDuartePT/deckifier/tree/kde) branch that use the plasma desktop
+
+For lightdm user use the [lightdm](https://github.com/MrDuartePT/deckifier/tree/kde) branch (not forget to change the DE/WM if needed)
+
+For greetd user use the [Hyprland-greetd](https://github.com/MrDuartePT/deckifier/tree/kde) branch (not forget to change the DE/WM if needed)
+
+TODO: An [gbm](https://github.com/MrDuartePT/deckifier/tree/gbm)  branch (If someone what to do a PR also welcome)
 
 <hr>
 
 # Pre-requisites
-Before installing, make sure you have mangohud install (both 64 and 32 bits).
+Before installing, make sure you have mangohud install (both 64 and 32 bits), ChimeraOS gamescope fork and steam.
 
 # Gentoo Ebuild
 
@@ -34,7 +42,9 @@ The Gentoo Ebuild link is hosted [here](https://github.com/MrDuartePT/mrduarte-e
 
 [Ebuild file](https://github.com/MrDuartePT/mrduarte-ebuilds/blob/f5785e150017b9c7bcb734b8a55cfa0ce083215b/games-util/gamescope-session-hyprland/gamescope-session-hyprland-9999.ebuild)
 
-# Steps:
+If you are using kde pls use the [kde](https://github.com/MrDuartePT/deckifier/tree/kde) branch, if you are using other DE/WM fork the project and create a patch in the `rootfs/usr/lib/os-session-select` file (by changing the session_launcher names)
+
+# Manual install:
 
 ## 1. Cloning this repo and copy files with proper permissions
 ```
@@ -43,32 +53,18 @@ git clone https://github.com/MrDuartePT/deckifier-hyprland.git && cd deckifier-h
 ```
 cp -rf rootfs/usr/* /usr
 cp -rf rootfs/etc/* /etc
-chmod 777 /usr/bin/jupiter-biosupdate
-chmod 777 /usr/bin/steamos-update
 chmod 777 /usr/bin/steamos-session-select
 gio set /usr/share/applications/org.valve.gamescope.desktop metadata::trusted true
 chmod a+x /usr/share/applications/org.valve.gamescope.desktop
 
-Note: No greetd and/or hyprland user pls run: ```rm -rf /etc/greetd```
-
 ```
 
-## 2. Go inside polkits folder and replace with your username SteamVR's Policy 
-```
-cd /usr/share/polkit-1/actions && nano org.valve.steamvr.policy
-```
-```
-At line 14 replace /home/mrduarte with your username
-ctrl+O and Enter to Save
-ctrl+X to exit
-```
-
-## 3. Go to /usr/lib/os-session-select and replace with your username 
+## 2. Go to /usr/lib/os-session-select and replace session_launcher if needed 
 ```
 nano /usr/lib/os-session-select
 ```
 ```
-At line 90 replace mrduarte with your username
+At line 50-66 replace session_launcher what is needed
 ctrl+O and Enter to Save
 ctrl+X to exit
 ```
@@ -80,14 +76,13 @@ reboot
 
 ## NOTE:
 Using Nvidia Laptop
-After adding DRI_PRIME=1 %command% to launch option games launch fine
-1st Note: Dont do nested gamescipe on SteamOS session the game will crash on lauch, but you can use mangohud or other option
-2st Note: If you laptop have the hdmi conneted to the dGPU you looose that output
+My need to add DRI_PRIME=1 %command% to launch the game with NVIDIA dGPU (I don't need on my laptop pls tested)
+1st Note: Dont do nested gamescope on SteamOS session the game will crash on launch.
+2st Note: If you laptop have the hdmi conneted to the dGPU you loose that output
 
-Using Laptop in dGPU Mode[MUX] or Nvidia GPU on desktop (Need testers):
-[I will alsume the result will be the same on Desktop PC but I only have a laptop to test]
+Using Laptop in dGPU Mode[MUX] or Nvidia GPU on desktop my cause graphical glitches
 
-You my need to edit things in (/usr/lib/os-session-select)[https://github.com/MrDuartePT/deckifier-hyprland/blob/main/rootfs/usr/lib/os-session-select]
+Pls double check [/usr/lib/os-session-select](https://github.com/MrDuartePT/deckifier-hyprland/blob/main/rootfs/usr/lib/os-session-select) you my need to edit things
 
 # Credits:
 
