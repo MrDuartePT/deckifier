@@ -21,11 +21,11 @@ This adds almost all of the required SteamOS dependencies, as well as FPS limiti
 <hr>
 
 # IMPORTANT
-This works on distros running Hyprland and SDDM as display manager. But can be edit to work with other DE/WM (explain bellow)
+This works on distros running Hyprland and lightdm as display manager. But can be edit to work with other DE/WM (explain bellow)
 
 It also available a [kde](https://github.com/MrDuartePT/deckifier/tree/kde) branch that use the plasma desktop
 
-For lightdm user use the [lightdm](https://github.com/MrDuartePT/deckifier/tree/lightdm) branch (not forget to change the DE/WM if needed)
+For sddm user use the [Hyprland sddm](https://github.com/MrDuartePT/deckifier/tree/hyprland) branch (not forget to change the DE/WM if needed)
 
 For greetd user use the [hyprland-greetd](https://github.com/MrDuartePT/deckifier/tree/hyprland-greetd) branch (not forget to change the DE/WM if needed)
 
