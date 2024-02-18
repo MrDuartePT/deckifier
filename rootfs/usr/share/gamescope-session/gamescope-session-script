@@ -10,8 +10,8 @@ export mesa_glthread=true
 # Force wlroots/gamescope to run on the frist gpu (in multi gpu system most likely is the igpu)
 # This fix gamescope not open when on hybrid with NVIDIA enable
 # Pls use DRI_PRIME=1 in games to use the dgpu
-# Also add fallback to card0 (NVIDIA) if igpu is not present
-export WLR_DRM_DEVICES=/dev/dri/card1:/dev/dri/card0
+# Also add fallback to card1 (NVIDIA) if igpu is not present (change from kernel 6.7.5+)
+export WLR_DRM_DEVICES=/dev/dri/card0:/dev/dri/card1
 
 # Some environment variables by default (taken from Deck session)
 export SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS=0
